@@ -4,9 +4,9 @@ A repository to explore dense representations of words.
 
 ## Useful Links
 
-[https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1194/](https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1194/)
-[http://mccormickml.com/](http://mccormickml.com/)
-[https://lilianweng.github.io/lil-log/2017/10/15/learning-word-embedding.html#examples-word2vec-on-game-of-thrones](https://lilianweng.github.io/lil-log/2017/10/15/learning-word-embedding.html#examples-word2vec-on-game-of-thrones)
+- [https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1194/](https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1194/)
+- [http://mccormickml.com/](http://mccormickml.com/)
+- [https://lilianweng.github.io/lil-log/2017/10/15/learning-word-embedding.html#examples-word2vec-on-game-of-thrones](https://lilianweng.github.io/lil-log/2017/10/15/learning-word-embedding.html#examples-word2vec-on-game-of-thrones)
 
 ## Models
 
