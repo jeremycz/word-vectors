@@ -1,30 +1,20 @@
 # Word Vectors
 
-## SVD
+A repository to explore dense representations of words.
 
-### Methodology
+## Useful Links
 
-1. Loop over corpus and accumulate word co-occurrence counts in a matrix $X$
-2. Apply SVD to get $X = USV^T$
-3. Use the rows of $U$ as the word embeddings for all words in the dictionary (use the first $k$ columns to get $k$-dimensional word vectors)
+[https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1194/](https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1194/)
+[http://mccormickml.com/](http://mccormickml.com/)
+[https://lilianweng.github.io/lil-log/2017/10/15/learning-word-embedding.html#examples-word2vec-on-game-of-thrones](https://lilianweng.github.io/lil-log/2017/10/15/learning-word-embedding.html#examples-word2vec-on-game-of-thrones)
 
-Variance captured:
+## Models
 
-$$
-\frac{\sum_{i=1}^k\sigma_i}{\sum_{j=1}^{|V|}\sigma_j}
-$$
-
-where $\sigma$ are the singular values of $X$ contained in the diagonal of $S$.
-
-Issues:
-
-- $X$ is very sparse since most words do not co-occur
-- $X$ is very large - expensive to perform SVD (computational cost for $m\times n$ matrix is $\mathcal{O}(mn^2)$)
-- Need to make adjustments
-
-## LSA
-
-## LDA
+- [SVD-based](notebooks/svd_word_vectors.ipynb)
+- LSA
+- LDA
+- word2vec
+- GloVe
 
 ## word2vec
 
