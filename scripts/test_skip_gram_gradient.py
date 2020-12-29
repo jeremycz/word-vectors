@@ -8,7 +8,7 @@ def softmax(target: np.array, candidates: np.array, candidate_ind: int) -> np.fl
     return np.exp(np.dot(candidates[candidate_ind], target)) / np.sum(np.exp(np.dot(candidates, target)))
 
 
-def cost(tokens: np.array, embeddings: np.array) -> np.float64:
+def cost(tokens: np.array, embeddings: np.array, debug: bool = False) -> np.float64:
     """Compute skip-gram cost function
 
     embeddings = [[-u-], [-v-]]
@@ -18,25 +18,30 @@ def cost(tokens: np.array, embeddings: np.array) -> np.float64:
     if len(tokens.shape) == 1:
         tokens = np.expand_dims(tokens, axis=0)
     elif len(tokens.shape) > 2:
-        return
+        raise ValueError("Tokens array should not have more than 2 dimensions")
     
     batch_size = tokens.shape[0]
+    if debug:
     print(f"Batch size: {batch_size}")
 
     #
     n_tokens_per_sample = tokens.shape[1]
-    print(f"Tokens per sample: {n_tokens_per_sample}")
     if n_tokens_per_sample % 2 == 0:
-        return
+        raise ValueError("Sample size should be an odd number")
+
+    if debug:
+        print(f"Tokens per sample: {n_tokens_per_sample}")
 
     center_token_ind = n_tokens_per_sample // 2
+    if debug:
     print(f"Center token ind: {center_token_ind}")
 
     #
     if embeddings.shape[0] % 2 != 0:
-        return
+        raise ValueError("The first dimension of the embeddings array should be an even number")
     
     vocab_size = embeddings.shape[0] // 2
+    if debug:
     print(f"Vocab size: {vocab_size}")
 
     #
@@ -67,13 +72,13 @@ def test_skip_gram_cost_function() -> None:
     )
 
     batch0 = np.array([1,0,0], dtype=np.int64)
-    print(f"Cost: {cost(batch0, embeddings):.6f}")
+    print(f"Cost: {cost(batch0, embeddings, True):.6f}")
     print(f"Expected cost: {2.253856}")
 
     print()
 
     batch1 = np.array([[1,0,0], [0,1,0]], dtype=np.int64)
-    print(f"Cost: {cost(batch1, embeddings):.6f}")
+    print(f"Cost: {cost(batch1, embeddings, True):.6f}")
     print(f"Expected cost: {1.145078}")
 
 
