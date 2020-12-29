@@ -22,7 +22,7 @@ def cost(tokens: np.array, embeddings: np.array, debug: bool = False) -> np.floa
     
     batch_size = tokens.shape[0]
     if debug:
-    print(f"Batch size: {batch_size}")
+        print(f"Batch size: {batch_size}")
 
     #
     n_tokens_per_sample = tokens.shape[1]
@@ -34,7 +34,7 @@ def cost(tokens: np.array, embeddings: np.array, debug: bool = False) -> np.floa
 
     center_token_ind = n_tokens_per_sample // 2
     if debug:
-    print(f"Center token ind: {center_token_ind}")
+        print(f"Center token ind: {center_token_ind}")
 
     #
     if embeddings.shape[0] % 2 != 0:
@@ -42,7 +42,7 @@ def cost(tokens: np.array, embeddings: np.array, debug: bool = False) -> np.floa
     
     vocab_size = embeddings.shape[0] // 2
     if debug:
-    print(f"Vocab size: {vocab_size}")
+        print(f"Vocab size: {vocab_size}")
 
     #
     cost = 0.0
@@ -58,6 +58,21 @@ def cost(tokens: np.array, embeddings: np.array, debug: bool = False) -> np.floa
 
     cost *= -1. / batch_size
     return cost
+
+
+def gradient_fd(batch: np.array, embeddings: np.array, step_size: float = 1e-6) -> np.array:
+    """"""
+    cost_init = cost(batch, embeddings)
+
+    gradient = np.zeros(embeddings.shape, dtype=np.float64)
+    for ind, _ in np.ndenumerate(embeddings):
+        print(ind)
+        embeddings_copy = np.copy(embeddings)
+        embeddings_copy[ind] += step_size
+        cost_update = cost(batch, embeddings_copy)
+        gradient[ind] = (cost_update - cost_init) / step_size
+
+    return gradient
 
 
 def test_skip_gram_cost_function() -> None:
@@ -84,9 +99,21 @@ def test_skip_gram_cost_function() -> None:
 
 def test_skip_gram_gradient() -> None:
     print("=== Test skip-gram gradient function === ")
-    pass
 
+    embeddings = np.array([
+        [1,4,5,8],
+        [2,3,6,7],
+        [1,2,3,4],
+        [1,3,5,7]],
+        dtype=np.float64    
+    )
+
+    batch0 = np.array([1,0,0], dtype=np.int64)
+
+    # Compute gradient using finite difference
+    print(gradient_fd(batch0, embeddings, step_size=1e-6))
+    
 
 if __name__ == "__main__":
     test_skip_gram_cost_function()
-    # test_skip_gram_gradient()
+    test_skip_gram_gradient()
