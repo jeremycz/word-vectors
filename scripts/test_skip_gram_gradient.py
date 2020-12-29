@@ -8,24 +8,24 @@ def softmax(target: np.array, candidates: np.array, candidate_ind: int) -> np.fl
     return np.exp(np.dot(candidates[candidate_ind], target)) / np.sum(np.exp(np.dot(candidates, target)))
 
 
-def cost(tokens: np.array, embeddings: np.array, debug: bool = False) -> np.float64:
+def cost(batch: np.array, embeddings: np.array, debug: bool = False) -> np.float64:
     """Compute skip-gram cost function
 
     embeddings = [[-u-], [-v-]]
     embeddings.shape = (2 * vocab_size, embedding_dim)
     """
     #
-    if len(tokens.shape) == 1:
-        tokens = np.expand_dims(tokens, axis=0)
-    elif len(tokens.shape) > 2:
+    if len(batch.shape) == 1:
+        batch = np.expand_dims(batch, axis=0)
+    elif len(batch.shape) > 2:
         raise ValueError("Tokens array should not have more than 2 dimensions")
     
-    batch_size = tokens.shape[0]
+    batch_size = batch.shape[0]
     if debug:
         print(f"Batch size: {batch_size}")
 
     #
-    n_tokens_per_sample = tokens.shape[1]
+    n_tokens_per_sample = batch.shape[1]
     if n_tokens_per_sample % 2 == 0:
         raise ValueError("Sample size should be an odd number")
 
@@ -46,7 +46,7 @@ def cost(tokens: np.array, embeddings: np.array, debug: bool = False) -> np.floa
 
     #
     cost = 0.0
-    for sample in tokens:
+    for sample in batch:
         for ind, token in enumerate(sample):
             if ind == center_token_ind:
                 continue
