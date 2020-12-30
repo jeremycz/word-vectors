@@ -86,7 +86,18 @@ $$
 
 #### Objective function
 
+$$
+J(\theta) = -\frac{1}{T}\sum_{t=1}^T\log P(w_I|w_C)
+$$
 
+#### Gradient
 
+$$
+\begin{aligned}
+    \frac{\partial P(w_I|w_C)}{\partial v_{c,j}} &= u_I - \sum_{w\in V}P(w_I|w_C)\cdot u_w \\
+    \frac{\partial P(w_I|w_C)}{\partial u_I} &= v_C - v_C\cdot P(w_I|w_C) \\
+    \frac{\partial P(w_I|w_C)}{\partial u_{w, w\in V, w\neq I}} &= -v_C\cdot P(w_I|w_C)
+\end{aligned}
+$$
 
 ## GloVe
