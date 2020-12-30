@@ -1,10 +1,14 @@
 """Test cost and gradient computation for skip-gram word vector model
 """
+from typing import List, Union
 
 import numpy as np
 
 
-def softmax(target: np.array, candidates: np.array, candidate_ind: int) -> np.float64:
+def softmax(target: np.array, candidates: np.array, candidate_ind: Union[np.int64, int, List[int]]) -> Union[np.float64, np.array]:
+    if not isinstance(candidate_ind, (np.int64, int, list)):
+        raise TypeError(f"Type of candidate_ind ({type(candidate_ind)}) needs to be one of (int, list, np.int64)")
+        
     return np.exp(np.dot(candidates[candidate_ind], target)) / np.sum(np.exp(np.dot(candidates, target)))
 
 
