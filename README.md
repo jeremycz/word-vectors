@@ -56,6 +56,16 @@ $$
 - $u_w$ and $v_w$ are the 'input' and 'output' vector representations of $w$, and $W$ is the size of the vocabulary
 - This formulation is impractical computationally because it requires computing the softmax over all the representations in the vocabulary
 
+#### Gradient
+
+$$
+\begin{aligned}
+    \frac{\partial P(w_O|w_I)}{\partial v_I} &= u_O - \sum_{w\in V}P(w_w|w_I)\cdot u_w \\
+    \frac{\partial P(w_O|w_I)}{\partial u_O} &= v_I - v_I\cdot P(w_O|w_I) \\
+    \frac{\partial P(w_O|w_I)}{\partial u_{w, w\in V, w\neq O}} &= -v_I\cdot P(w_w|w_I)
+\end{aligned}
+$$
+
 ### CBOW Model
 
 The probability $P(w_t|w_c)$ is calculated using the softmax function:
