@@ -1,4 +1,4 @@
-"""Test gradient computation for skip-gram word vector model
+"""Test cost and gradient computation for skip-gram word vector model
 """
 
 import numpy as np
