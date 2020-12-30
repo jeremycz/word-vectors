@@ -63,12 +63,11 @@ def cost(batch: np.array, embeddings: np.array, debug: bool = False) -> np.float
 
 
 def gradient_fd(batch: np.array, embeddings: np.array, step_size: float = 1e-6) -> np.array:
-    """"""
+    """Computes gradient of the skip-gram cost function using finite differencing"""
     cost_init = cost(batch, embeddings)
 
     gradient = np.zeros(embeddings.shape, dtype=np.float64)
     for ind, _ in np.ndenumerate(embeddings):
-        print(ind)
         embeddings_copy = np.copy(embeddings)
         embeddings_copy[ind] += step_size
         cost_update = cost(batch, embeddings_copy)
