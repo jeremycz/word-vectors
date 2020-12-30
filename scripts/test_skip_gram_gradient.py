@@ -52,9 +52,7 @@ def cost(batch: np.array, embeddings: np.array, debug: bool = False) -> np.float
     cost = 0.0
     for sample in batch:
         for ind, token in enumerate(sample):
-            if ind == center_token_ind:
-                continue
-
+            if ind != center_token_ind:
             cost += np.log(softmax(
                 embeddings[vocab_size + sample[center_token_ind]],
                 embeddings[:vocab_size],
