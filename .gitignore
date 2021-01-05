@@ -5,6 +5,8 @@ data/*
 models/*
 !models/.gitkeep
 a2/utils/datasets
+*.pickle
+*.npy
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
