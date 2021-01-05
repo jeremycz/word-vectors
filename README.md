@@ -2,6 +2,28 @@
 
 A repository to explore dense representations of words.
 
+## Introduction
+
+- Most words are symbols for an extra-linguistic entity - a word is a signifier that maps to a signified (idea/thing)
+- Approx. 13m words in English language
+  - There is probably some N-dimensional space (such that N << 13m) that is sufficient to encode all semantics of our language
+- Most simple word vector - one-hot encoding
+  - Denotational semantics - the concept of representing an idea as a symbol - a word or one-hot vector - sparse, cannot capture similarity - localist encoding
+
+Evaluation
+
+- Intrinsic - evaluation on a specific, intermediate task
+  - Fast to compute
+  - Aids with understanding of the system
+  - Needs to be correlated with real task to provide a good measure of usefulness
+  - Word analogies - popular intrinsic evaluation method for word vectors
+    - Semantic - e.g. King/Man | Queen/Woman
+    - Syntactic - e.g. big/biggest | fast/fastest
+- Extrinsic - evaluation on a real task
+  - Slow
+  - May not be clear whether the problem with low performance is related to a particular subsystem, other subsystems, or interactions between subsystems
+  - If a subsystem is replaced and performance improves, the change is likely to be good
+
 ## Useful Links
 
 - [https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1194/](https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1194/)
@@ -15,6 +37,39 @@ A repository to explore dense representations of words.
 - LDA
 - word2vec
 - GloVe
+
+## SVD-based methods
+
+1. Loop over dataset and accumulate word co-occurrence counts in a matrix $X$
+2. Perform a SVD on $X$ to get a $USV^T$ decomposition
+3. Use the rows of $U$ as the word embeddings (use the first $k$ columns to limit the embedding dimension)
+
+Methods to compute $X$:
+
+- Word-Document matrix
+  - Each time word $i$ appears in document $j$, increment $X_{ij}$
+  - $X \in \mathcal{R}^{V \times M}$, where $M$ is the number of documents
+- Window-based co-occurrence
+  - $X \in \mathcal{R}^{V \times V}$
+
+Variance captured by embeddings:
+
+$$
+\frac{\sum_{i=1}^k\sigma_i}{\sum_{i=1}^{V \textnormal{ or } M}\sigma_i}
+$$
+
+Problems:
+
+- Vocab fixed at start - based on corpus
+- Matrix is sparse
+- Matrix is high-dimensional (quadratic cost for SVD)
+- Need to perform some hacks to adjust for imbalanced word frequencies
+
+Solutions to issues:
+
+- Ignore function words
+- Weight co-occurrence counts based on distance between words in the document
+- Use Pearson correlation and set negative counts to 0 instead of using just the raw count
 
 ## word2vec
 
@@ -30,9 +85,32 @@ Two model architectures:
 1. Continuous Bag-of-Words (CBOW) - uses context words to predict target word
 2. Continuous Skip-gram - uses target word to predict context word
 
+Training methods
+
+- Negative sampling - include negative examples in computation of cost function
+  - Better for frequent words and lower dimensional vectors
+- Hierarchical softmax - define objective using an efficient tree structure to compute probabilities for the complete vocabulary
+  - Better for infrequent words
+
+Objective function (cross-entropy)
+
+$$
+H(\hat{y}, y) = -\sum_{w\in W}y_j\log(\hat{y_j})
+$$
+
+Since $y_j = 1$ for the target word and $y_j = 0$ for all other words, the equation reduces to
+
+$$
+H = -\log(\hat{y})
+$$
+
+where $\hat{y}$ is the predicted probability of the target word.
+
 ### Skip-gram Model
 
 #### Objective function
+
+Assumption: Given the center word, all output words are completely independent (Naive Bayes assumption)
 
 $$
 \textnormal{Likelihood} = L(\theta) = \prod_{t=1}^{T}\prod_{-c\leq j\leq c, j\neq 0}P(w_{t+j}|w_t;\theta)
@@ -101,3 +179,6 @@ $$
 $$
 
 ## GloVe
+
+- Combines results from LSA with word2vec
+- Predict probability of word $j$ occuring in the context of word $i$ using global statistics (e.g. co-occurrence counts)
