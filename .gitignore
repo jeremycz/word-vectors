@@ -4,6 +4,7 @@ data/*
 !data/.gitkeep
 models/*
 !models/.gitkeep
+a2/utils/datasets
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
